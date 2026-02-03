@@ -1,0 +1,22 @@
+name: Knowledge Node Validation
+
+on:
+  pull_request:
+    paths:
+      - 'knowledge/**'
+      - 'docs/**'
+
+jobs:
+  validate-knowledge:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Validate knowledge format
+      run: |
+        echo "检查知识节点格式..."
+        find knowledge -name "*.md" | while read file; do
+          echo "🔍 $file"
+          # 检查必需字段
+          grep -q "## 定义" "$file" || echo "⚠️  缺少定义: $file"
+          grep -q "## 关联节点" "$file" || echo "⚠️  缺少关联: $file"
+        done
