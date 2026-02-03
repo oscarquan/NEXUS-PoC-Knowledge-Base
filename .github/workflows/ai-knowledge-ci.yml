@@ -1,0 +1,50 @@
+name: NEXUS Knowledge CI
+
+on:
+  push:
+    branches: [ main, develop, knowledge/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  knowledge-validation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Validate structure
+      run: |
+        echo "🔍 验证知识库结构..."
+        [ -f "README.md" ] && echo "✓ README.md" || echo "✗ README.md missing"
+        [ -d "docs/decisions" ] && echo "✓ 决策文档目录" || echo "✗ 决策文档缺失"
+        [ -d "src/knowledge" ] && echo "✓ 知识节点目录" || echo "✗ 知识节点目录缺失"
+        
+    - name: Check AI markers
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "🤖 检查AI生成内容..."
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        if echo "$PR_TITLE" | grep -q "\[AI-generated\]"; then
+          echo "⚠️ AI-GENERATED CONTENT DETECTED"
+          echo "::warning::This PR contains AI-generated knowledge nodes. Human review required!"
+          echo ""
+          echo "📋 知识审查清单:"
+          echo "1. ✅ 验证知识准确性"
+          echo "2. ✅ 检查关联合理性"
+          echo "3. ✅ 确认无矛盾信息"
+          echo "4. ✅ 更新相关文档"
+        fi
+
+  documentation-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check documentation links
+      run: |
+        echo "📚 检查文档完整性..."
+        find docs -name "*.md" | while read file; do
+          echo "检查: $file"
+          if grep -q "TODO\|FIXME" "$file"; then
+            echo "⚠️  发现待完成项: $file"
+          fi
+        done
