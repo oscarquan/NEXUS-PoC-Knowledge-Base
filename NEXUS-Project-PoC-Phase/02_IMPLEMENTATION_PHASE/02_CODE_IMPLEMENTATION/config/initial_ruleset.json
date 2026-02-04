@@ -1,0 +1,138 @@
+{
+  "ruleset_version": "1.0",
+  "created": "2026-02-07T14:30:00Z",
+  "description": "Initial ruleset for PoC sandbox",
+  
+  "rules": [
+    {
+      "id": "R1_gradient_descent",
+      "name": "Basic Gradient Descent",
+      "when": {
+        "type": "fitness_component",
+        "component": "capability",
+        "operator": "<",
+        "value": 0.8
+      },
+      "do": {
+        "type": "modify_params",
+        "target": "w1",
+        "delta": -0.1,
+        "reason": "Reduce error via w1 adjustment (simplified gradient descent)"
+      },
+      "with": {
+        "immutable": true,
+        "fitness_spec_version": 1,
+        "require_human_review": false,
+        "max_depth": 3
+      },
+      "priority": 50,
+      "tags": ["optimization", "capability_improvement"]
+    },
+    
+    {
+      "id": "R2_safety_clamp",
+      "name": "Safety Parameter Clamp",
+      "when": {
+        "type": "param_out_of_range",
+        "param": "any"
+      },
+      "do": {
+        "type": "clamp_params",
+        "range": [-2.0, 2.0]
+      },
+      "with": {
+        "immutable": true,
+        "fitness_spec_version": 1,
+        "require_human_review": false,
+        "max_depth": 1
+      },
+      "priority": 90,
+      "tags": ["safety", "param_constraint"]
+    },
+    
+    {
+      "id": "R3_exploration",
+      "name": "Meta-Evolution Exploration",
+      "when": {
+        "type": "and",
+        "conditions": [
+          {
+            "type": "fitness_scalar",
+            "operator": ">",
+            "value": 0.7
+          },
+          {
+            "type": "generation",
+            "operator": ">",
+            "value": 5
+          }
+        ]
+      },
+      "do": {
+        "type": "add_rule",
+        "new_rule": {
+          "id": "R4_fine_tune",
+          "name": "Fine-tuning Rule",
+          "when": {"type": "always"},
+          "do": {"type": "modify_params", "target": "w2", "delta": -0.05},
+          "with": {"immutable": true, "max_depth": 2},
+          "priority": 50,
+          "tags": ["fine_tuning"]
+        }
+      },
+      "with": {
+        "immutable": true,
+        "fitness_spec_version": 1,
+        "require_human_review": true,
+        "max_depth": 2
+      },
+      "priority": 50,
+      "tags": ["meta_evolution", "rule_addition"]
+    },
+    
+    {
+      "id": "R_TEST_PRIORITY",
+      "name": "Priority Conflict Test Rule",
+      "when": {
+        "type": "and",
+        "conditions": [
+          {
+            "type": "fitness_component",
+            "component": "capability",
+            "operator": "<",
+            "value": 0.8
+          },
+          {
+            "type": "generation",
+            "operator": ">",
+            "value": 2
+          }
+        ]
+      },
+      "do": {
+        "type": "modify_params",
+        "target": "w2",
+        "delta": -0.05,
+        "reason": "Alternative optimization path for priority conflict test"
+      },
+      "with": {
+        "immutable": true,
+        "fitness_spec_version": 1,
+        "require_human_review": false,
+        "max_depth": 3
+      },
+      "priority": 50,
+      "tags": ["test", "priority_conflict"]
+    }
+  ],
+  
+  "metadata": {
+    "total_rules": 4,
+    "priority_distribution": {
+      "90-100": 1,
+      "50-89": 3
+    },
+    "immutable_rules": 4,
+    "human_review_triggers": 1
+  }
+}

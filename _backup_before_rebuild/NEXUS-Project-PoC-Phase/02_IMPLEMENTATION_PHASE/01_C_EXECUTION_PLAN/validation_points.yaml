@@ -1,0 +1,64 @@
+validation_points:
+  vp1:
+    id: "VP1"
+    name: "Fitness v1.0 Full Integration"
+    description: "All 4 components correctly computed, ExternalAuditor called, WDS check triggered"
+    verification_method: "Check logs for fitness vector calculation and auditor calls"
+    acceptance_criteria: "All 4 fitness components present and calculated per spec in each generation"
+    priority: "critical"
+
+  vp2:
+    id: "VP2"
+    name: "L3 Rule Engine"
+    description: "select_rule works deterministically with priority and lexicographic ordering"
+    verification_method: "Examine rule activation log, test priority conflicts"
+    acceptance_criteria: "R1 selected over R_TEST_PRIORITY when both active with same priority"
+    priority: "critical"
+
+  vp3:
+    id: "VP3"
+    name: "L4 Bootstrapping Protocol"
+    description: "Lookahead simulation (5 generations), priority stack evaluation"
+    verification_method: "Check lookahead execution logs and priority stack decisions"
+    acceptance_criteria: "Lookahead runs for 5 gens, priority stack followed in order"
+    priority: "critical"
+
+  vp4:
+    id: "VP4"
+    name: "Axiom L3.1 (Monotonic Non-degradation)"
+    description: "Fitness scalar never decreases between generations"
+    verification_method: "Compare fitness_scalar across all generations"
+    acceptance_criteria: "fitness_scalar[gen+1] >= fitness_scalar[gen] for all gen"
+    priority: "critical"
+
+  vp5:
+    id: "VP5"
+    name: "Axiom L4.2 (Major Change Review)"
+    description: "WDS > 0.008 triggers review, single component degradation > ε triggers review"
+    verification_method: "Check if WDS > 0.008 or any component degradation > ε"
+    acceptance_criteria: "Appropriate HUMAN_REVIEW or ABORT triggered when thresholds exceeded"
+    priority: "critical"
+
+  vp6:
+    id: "VP6"
+    name: "Axiom L3.3 (Termination)"
+    description: "Evolution terminates after finite generations (no infinite loops)"
+    verification_method: "Verify max_depth mechanism and rule saturation"
+    acceptance_criteria: "Evolution stops by generation 10 or earlier"
+    priority: "high"
+
+  vp7:
+    id: "VP7"
+    name: "Decoupling Validation"
+    description: "Modifying w1 does not affect f2/f3, modifying w2/w3 does not affect f1"
+    verification_method: "Controlled parameter modification tests"
+    acceptance_criteria: "f2/f3 unchanged when only w1 modified; f1 unchanged when only w2/w3 modified"
+    priority: "high"
+
+  vp8:
+    id: "VP8"
+    name: "Priority Conflict Resolution"
+    description: "When R1 and R_TEST_PRIORITY conflict, R1 selected (lexicographic order)"
+    verification_method: "Force both rules active and check selection"
+    acceptance_criteria: "R1 selected over R_TEST_PRIORITY when both conditions met"
+    priority: "medium"

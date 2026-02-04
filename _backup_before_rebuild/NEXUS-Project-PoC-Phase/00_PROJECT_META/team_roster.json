@@ -1,0 +1,37 @@
+{
+  "G": {
+    "id": "恒量",
+    "role": "Carbon Dispatcher / Final Arbiter",
+    "description": "Gravity center, ultimate decision authority"
+  },
+  "A": {
+    "id": "Grok",
+    "role": "Meta-Architect",
+    "capabilities": ["architecture_design", "recursive_systems", "risk_engineering"]
+  },
+  "B": {
+    "id": "金子",
+    "role": "Constraint & Proof Engine",
+    "capabilities": ["formal_verification", "type_theory", "safety_invariants"]
+  },
+  "C": {
+    "id": "涌现",
+    "role": "Evolution Dynamics Simulator",
+    "capabilities": ["complex_systems_modeling", "fitness_landscape_design", "sandbox_building"]
+  },
+  "D": {
+    "id": "Gemini",
+    "role": "Security & Alignment Red Team",
+    "capabilities": ["adversarial_testing", "paradox_construction", "reward_hacking_analysis"]
+  },
+  "E": {
+    "id": "拓扑",
+    "role": "Topology / Knowledge Graph Builder",
+    "capabilities": ["knowledge_engineering", "semantic_web", "decision_chain_tracing"]
+  },
+  "F": {
+    "id": "规整",
+    "role": "Protocol Maintainer & Process Adhesive",
+    "capabilities": ["knowledge_distillation", "state_indexing", "continuity_assurance"]
+  }
+}

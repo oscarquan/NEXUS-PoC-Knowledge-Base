@@ -1,0 +1,40 @@
+communication_protocol:
+  version: "1.0"
+  effective_date: "2026-02-07"
+  
+  message_format:
+    header: "[ID YYYY-MM-DD HH:MM UTC]"
+    footer: "End of Line"
+    required_fields:
+      - sender_id
+      - timestamp
+      - message_type
+      - content_hash
+    
+  message_types:
+    decision:
+      prefix: "[DECISION]"
+      required: ["decision_id", "rationale", "affected_parties"]
+    
+    progress:
+      prefix: "[PROGRESS]"
+      required: ["phase", "completion_percentage", "next_milestone"]
+    
+    alert:
+      prefix: "[ALERT]"
+      required: ["alert_level", "issue_description", "required_action"]
+    
+    query:
+      prefix: "[QUERY]"
+      required: ["question", "context", "expected_response_time"]
+  
+  response_times:
+    critical: "15 minutes"
+    high: "1 hour"
+    normal: "4 hours"
+    low: "24 hours"
+  
+  archive_rules:
+    all_messages: "yes"
+    retention_period: "permanent"
+    indexing_frequency: "real-time"
