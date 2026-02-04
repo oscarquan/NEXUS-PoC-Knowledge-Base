@@ -1,0 +1,36 @@
+标签列表及颜色代码
+标签名	颜色	描述
+ai-generated	#0E8A16 (绿色)	AI生成的代码
+needs-review	#FBCA04 (黄色)	需要人工审核
+human-reviewed	#1D76DB (蓝色)	已人工审核
+experimental	#D93F0B (橙色)	实验性功能
+ai-task	#5319E7 (紫色)	AI协作任务
+
+# 使用GitHub CLI创建标签
+gh label create "ai-generated" --color "0E8A16" --description "AI-generated code requiring review"
+gh label create "needs-review" --color "FBCA04" --description "Requires human code review"
+gh label create "human-reviewed" --color "1D76DB" --description "Code has been reviewed by human"
+gh label create "experimental" --color "D93F0B" --description "Experimental feature, may be unstable"
+gh label create "ai-task" --color "5319E7" --description "Task suitable for AI assistant"
+
+# 查看已创建的标签
+gh label list
+
+# 如果GitHub CLI不可用，使用curl
+TOKEN="你的个人访问令牌"
+
+create_label() {
+  curl -X POST \
+    -H "Authorization: token $TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    https://api.github.com/repos/oscarquan/2026/labels \
+    -d "{\"name\":\"$1\",\"color\":\"$2\",\"description\":\"$3\"}"
+}
+
+create_label "ai-generated" "0E8A16" "AI-generated code requiring review"
+create_label "needs-review" "FBCA04" "Requires human code review"
+create_label "human-reviewed" "1D76DB" "Code has been reviewed by human"
+create_label "experimental" "D93F0B" "Experimental feature"
+create_label "ai-task" "5319E7" "Task suitable for AI assistant"
+
+
